@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Паспорт безопасности бизнеса</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --r:#c8102e;--r2:#e63946;--cream:#f9f7f4;--off:#eeebe6;
+  --ink:#0d0d0d;--mid:#555;--dim:#999;
+  --ln:rgba(13,13,13,.09);--ln2:rgba(13,13,13,.05)
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ── PAGES ── */
+.pg{min-height:100vh;display:flex;flex-direction:column;position:relative}
+#pg-land{justify-content:flex-start}
+#pg-co{display:none;justify-content:center;align-items:center;padding:48px 20px;background:var(--cream)}
+#pg-quiz{display:none;justify-content:center;align-items:center;padding:0 20px 48px;background:var(--cream)}
+#pg-res{display:none;background:var(--cream)}
+
+/* ── CURSOR DOT (desktop only) ── */
+#cursor{position:fixed;width:8px;height:8px;border-radius:50%;background:var(--r);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .08s,width .2s,height .2s,opacity .2s;mix-blend-mode:multiply;display:none}
+body:hover #cursor{display:block}
+#cursor.big{width:36px;height:36px;opacity:.18}
+
+/* ── LANDING NAV ── */
+.land-nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px clamp(20px,5vw,60px);
+  border-bottom:1px solid var(--ln);position:relative;z-index:10
+}
+.nav-logo{
+  font-family:'Unbounded',sans-serif;font-size:13px;font-weight:900;
+  letter-spacing:-.03em;color:var(--ink);text-decoration:none
+}
+.nav-logo em{font-style:normal;color:var(--r)}
+.nav-pill{
+  font-size:10px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  padding:5px 12px;border:1px solid var(--ln);color:var(--dim)
+}
+
+/* ── HERO GRID ── */
+.hero-grid{
+  display:grid;grid-template-columns:1fr 420px;
+  flex:1;min-height:calc(100vh - 57px)
+}
+@media(max-width:780px){.hero-grid{grid-template-columns:1fr}}
+
+.hero-left{
+  padding:clamp(36px,5vw,72px) clamp(20px,5vw,60px);
+  display:flex;flex-direction:column;justify-content:space-between;
+  border-right:1px solid var(--ln)
+}
+
+.eyebrow{
+  font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--r);display:flex;align-items:center;gap:10px;margin-bottom:36px
+}
+.eyebrow::before{content:'';width:28px;height:1px;background:var(--r)}
+
+.hero-h{
+  font-family:'Unbounded',sans-serif;font-weight:900;
+  font-size:clamp(42px,6.5vw,80px);line-height:.93;letter-spacing:-.045em;
+  color:var(--ink);margin-bottom:28px
+}
+.hero-h .red{color:var(--r)}
+
+.hero-desc{font-size:15px;color:var(--mid);line-height:1.8;max-width:420px;margin-bottom:40px}
+
+/* animated counter stat */
+.hero-stats{display:flex;gap:0;border:1px solid var(--ln);width:fit-content;margin-bottom:44px}
+.hs{padding:14px 24px;border-right:1px solid var(--ln);display:flex;flex-direction:column;gap:5px}
+.hs:last-child{border-right:none}
+.hs-num{font-family:'Unbounded',sans-serif;font-size:28px;font-weight:900;color:var(--ink);line-height:1}
+.hs-lbl{font-size:9px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim)}
+
+.btn-start{
+  display:inline-flex;align-items:center;gap:0;border:none;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
+  overflow:hidden;width:fit-content;background:none
+}
+.btn-start-txt{
+  padding:14px 24px;background:var(--r);color:#fff;
+  transition:background .15s,padding .2s;letter-spacing:.02em
+}
+.btn-start-box{
+  width:50px;height:50px;background:var(--ink);display:flex;align-items:center;justify-content:center;
+  transition:background .15s,width .2s
+}
+.btn-start:hover .btn-start-txt{background:var(--r2);padding-right:18px}
+.btn-start:hover .btn-start-box{background:#222;width:56px}
+
+/* scrolling ticker */
+.ticker-wrap{
+  overflow:hidden;border-top:1px solid var(--ln);border-bottom:1px solid var(--ln);
+  padding:10px 0;white-space:nowrap;
+}
+.ticker-inner{display:inline-flex;animation:ticker 18s linear infinite}
+.ticker-item{
+  font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;
+  letter-spacing:-.01em;color:var(--ink);padding:0 28px;
+  opacity:.18
+}
+.ticker-item.red{color:var(--r);opacity:.9}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── HERO RIGHT PANEL ── */
+.hero-right{
+  background:var(--ink);display:flex;flex-direction:column;justify-content:flex-end;
+  padding:clamp(32px,5vw,64px) clamp(20px,4vw,48px);
+  position:relative;overflow:hidden
+}
+@media(max-width:780px){.hero-right{display:none}}
+
+/* animated grid lines */
+.hero-right::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:40px 40px;
+  animation:gridMove 8s linear infinite
+}
+@keyframes gridMove{from{background-position:0 0}to{background-position:40px 40px}}
+
+.hero-right::after{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:50%;
+  background:linear-gradient(to bottom,rgba(200,16,46,.12),transparent)
+}
+
+.panel-blocks{position:relative;z-index:2;display:flex;flex-direction:column;gap:1px}
+.pb{
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.05);cursor:default;
+  transition:background .2s,padding-left .2s;
+  border-left:2px solid transparent
+}
+.pb:hover{background:rgba(255,255,255,.1);padding-left:24px;border-left-color:var(--r)}
+.pb-name{font-size:13px;font-weight:500;color:rgba(255,255,255,.8)}
+.pb-code{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:900;color:rgba(255,255,255,.12)}
+.pb-count{font-size:10px;color:rgba(255,255,255,.25);font-weight:500;letter-spacing:.05em}
+
+.panel-credit{
+  position:relative;z-index:2;margin-top:32px;padding-top:24px;
+  border-top:1px solid rgba(255,255,255,.08);
+  font-size:11px;color:rgba(255,255,255,.25);line-height:1.6
+}
+
+/* ── FORM ── */
+.form-card{
+  width:100%;max-width:520px;
+  border-top:3px solid var(--r)
+}
+.form-head{background:var(--ink);padding:24px 28px 20px}
+.form-kicker{font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
+.form-htitle{font-family:'Unbounded',sans-serif;font-size:22px;font-weight:900;letter-spacing:-.04em;color:#fff}
+.form-body{background:var(--cream);border:1px solid var(--ln);border-top:none;padding:24px 28px}
+.fg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+@media(max-width:480px){.fg-grid{grid-template-columns:1fr}}
+.fg{display:flex;flex-direction:column;gap:5px}
+.fg.full{grid-column:1/-1}
+.fg label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--dim)}
+.fg input{
+  background:#fff;border:1px solid var(--ln);padding:10px 12px;
+  font-family:'Inter',sans-serif;font-size:13px;color:var(--ink);
+  outline:none;transition:border-color .15s;border-radius:0
+}
+.fg input::placeholder{color:var(--dim)}
+.fg input:focus{border-color:var(--r)}
+.form-note{font-size:11px;color:var(--dim);margin-bottom:20px;line-height:1.55;padding:9px 12px;border-left:2px solid var(--r);background:var(--off)}
+.btn-form{
+  display:inline-flex;align-items:center;gap:0;border:none;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;overflow:hidden
+}
+.btn-form-t{padding:12px 22px;background:var(--r);color:#fff;transition:background .15s}
+.btn-form:hover .btn-form-t{background:var(--r2)}
+.btn-form-a{width:44px;height:44px;background:var(--ink);display:flex;align-items:center;justify-content:center}
+
+/* ── QUIZ HEADER ── */
+.qhdr{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(249,247,244,.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--ln)
+}
+.qhdr-prog{height:2px;background:var(--r);transition:width .5s cubic-bezier(.4,0,.2,1);width:4%}
+.qhdr-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;max-width:720px;margin:0 auto;
+  padding:13px clamp(16px,4vw,40px)
+}
+.qhdr-logo{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:900;letter-spacing:-.03em;color:var(--ink)}
+.qhdr-info{display:flex;align-items:center;gap:16px}
+.qhdr-num{font-size:11px;color:var(--dim)}
+.qhdr-pct{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:900;color:var(--r);letter-spacing:-.02em}
+
+/* ── QUIZ BODY ── */
+.quiz-wrap{width:100%;max-width:700px;padding-top:86px;padding-bottom:48px}
+
+/* block indicator strip */
+.blk-strip{display:flex;gap:0;height:3px;margin-bottom:28px;overflow:hidden}
+.bs-seg{flex:1;background:var(--ln2);transition:background .3s}
+.bs-seg.active{background:var(--r)}
+.bs-seg.done{background:rgba(200,16,46,.25)}
+
+.q-block-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.q-blk-badge{
+  font-size:9px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
+  padding:4px 10px;border:1px solid var(--ln);color:var(--mid);
+  display:flex;align-items:center;gap:6px
+}
+.q-blk-dot{width:5px;height:5px;border-radius:50%;background:var(--r)}
+.q-idx-lbl{font-size:11px;color:var(--dim)}
+
+.q-txt{
+  font-family:'Unbounded',sans-serif;font-weight:700;
+  font-size:clamp(17px,2.6vw,22px);line-height:1.2;letter-spacing:-.04em;
+  color:var(--ink);margin-bottom:24px;
+  transform:translateY(0);opacity:1;transition:opacity .18s,transform .18s
+}
+.q-txt.hide{opacity:0;transform:translateY(-6px)}
+
+/* options as table rows */
+.opts-table{border:1px solid var(--ln);margin-bottom:28px;overflow:hidden}
+.opt{
+  display:flex;align-items:stretch;cursor:pointer;width:100%;
+  background:var(--cream);border-bottom:1px solid var(--ln);
+  transition:background .12s;text-align:left;
+  transform:translateX(0);opacity:1
+}
+.opt:last-child{border-bottom:none}
+.opt:hover{background:var(--off)}
+.opt.sel{background:var(--r)}
+.opt-n{
+  width:52px;min-width:52px;display:flex;align-items:center;justify-content:center;
+  font-family:'Unbounded',sans-serif;font-size:15px;font-weight:900;
+  color:rgba(13,13,13,.15);border-right:1px solid var(--ln);
+  transition:color .12s,border-color .12s
+}
+.opt:hover .opt-n{color:var(--mid)}
+.opt.sel .opt-n{color:rgba(255,255,255,.25);border-color:rgba(255,255,255,.15)}
+.opt-body{padding:13px 16px;flex:1}
+.opt-tier{font-size:9px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;color:var(--dim);margin-bottom:2px;transition:color .12s}
+.opt.sel .opt-tier{color:rgba(255,255,255,.5)}
+.opt-lbl{font-size:13px;color:var(--ink);line-height:1.38;transition:color .12s}
+.opt.sel .opt-lbl{color:#fff}
+
+.quiz-nav{display:flex;align-items:center;gap:12px}
+.btn-bk{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 18px;border:1px solid var(--ln);background:var(--cream);
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--mid);cursor:pointer;
+  transition:all .14s
+}
+.btn-bk:hover:not(:disabled){border-color:var(--ink);color:var(--ink)}
+.btn-bk:disabled{opacity:.3;cursor:not-allowed}
+.btn-nx{
+  display:inline-flex;align-items:center;gap:0;border:none;cursor:pointer;
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;overflow:hidden;margin-left:auto
+}
+.btn-nx:disabled{opacity:.3;cursor:not-allowed}
+.btn-nx-t{padding:10px 20px;background:var(--ink);color:#fff;transition:background .12s}
+.btn-nx:hover:not(:disabled) .btn-nx-t{background:#222}
+.btn-nx-a{width:40px;height:40px;background:var(--r);display:flex;align-items:center;justify-content:center}
+.btn-nx:disabled .btn-nx-a{background:var(--dim)}
+
+.dots-row{display:flex;gap:3px;flex-wrap:wrap;justify-content:center;max-width:180px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--ln2);border:1px solid var(--ln);transition:all .18s}
+.dot.done{background:rgba(200,16,46,.28);border-color:rgba(200,16,46,.28)}
+.dot.cur{width:14px;border-radius:3px;background:var(--r);border-color:var(--r)}
+
+/* ── RESULT HERO ── */
+.res-top{
+  background:var(--ink);padding:clamp(36px,5vw,64px) clamp(20px,5vw,64px);
+  border-bottom:3px solid var(--r)
+}
+.res-co{display:flex;gap:24px;flex-wrap:wrap;padding-bottom:18px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:26px}
+.rcf{display:flex;flex-direction:column;gap:2px}
+.rcl{font-size:9px;text-transform:uppercase;letter-spacing:.11em;color:rgba(255,255,255,.28);font-weight:600}
+.rcv{font-size:13px;color:rgba(255,255,255,.75);font-weight:500}
+
+.res-hero-grid{display:flex;align-items:flex-start;gap:32px;flex-wrap:wrap;max-width:960px}
+.res-ring-col{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:10px}
+.ring-box{position:relative;width:130px;height:130px;cursor:pointer}
+.ring-box svg{transform:rotate(-90deg)}
+.ring-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-val{font-family:'Unbounded',sans-serif;font-size:32px;font-weight:900;color:#fff;line-height:1;letter-spacing:-.04em}
+.ring-of{font-size:10px;color:rgba(255,255,255,.3)}
+.res-badge{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 10px;border:1px solid}
+
+.res-txt{flex:1;min-width:200px}
+.res-htxt{font-family:'Unbounded',sans-serif;font-size:clamp(18px,2.8vw,28px);font-weight:900;letter-spacing:-.04em;color:#fff;margin-bottom:8px;line-height:1.1}
+.res-sub{font-size:13px;color:rgba(255,255,255,.45);margin-bottom:20px;line-height:1.7}
+.bscores{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(255,255,255,.07)}
+.bsc{background:var(--ink);padding:11px 14px;cursor:pointer;transition:background .15s}
+.bsc:hover{background:#1a1a1a}
+.bsc-n{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.28);margin-bottom:3px}
+.bsc-v{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;color:#fff;margin-bottom:4px;letter-spacing:-.03em}
+.bsc-bar{height:2px;background:rgba(255,255,255,.07);overflow:hidden}
+.bsc-fill{height:2px;transition:width 1s ease}
+.bsc-s{font-size:9px;margin-top:3px;font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.bsc-expand{font-size:9px;color:rgba(255,255,255,.2);margin-top:4px}
+.bsc:hover .bsc-expand{color:rgba(255,255,255,.5)}
+
+/* ── RESULT BODY ── */
+.res-body{padding:clamp(20px,4vw,44px) clamp(20px,5vw,64px);max-width:960px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:560px){.res-body{grid-template-columns:1fr}}
+
+.sec-lbl{font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--ln)}
+
+.rcard{border:1px solid var(--ln);padding:13px 15px;display:flex;gap:11px;align-items:flex-start;margin-bottom:7px;border-left:2px solid;transition:transform .15s}
+.rcard:hover{transform:translateX(3px)}
+.rnum{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:13px;font-weight:900;flex-shrink:0}
+.r-blk{font-size:9px;text-transform:uppercase;letter-spacing:.07em;font-weight:600;color:var(--dim);margin-bottom:2px}
+.r-q{font-size:12px;font-weight:500;color:var(--ink);line-height:1.4;margin-bottom:4px}
+.r-rec{font-size:11px;color:var(--mid);line-height:1.5;padding-top:5px;border-top:1px solid var(--ln)}
+
+.road-sec{grid-column:1/-1}
+.road-list{display:flex;flex-direction:column}
+.road-row{display:flex;gap:0}
+.road-tl{display:flex;flex-direction:column;align-items:center;width:30px;flex-shrink:0;padding-top:13px}
+.road-dot{width:7px;height:7px;border-radius:50%;background:var(--r);flex-shrink:0}
+.road-line{width:1px;background:var(--ln);flex:1;min-height:10px;margin-top:4px}
+.road-row:last-child .road-line{display:none}
+.road-card{flex:1;border:1px solid var(--ln);padding:10px 13px;margin-bottom:6px;margin-left:8px;transition:border-color .15s}
+.road-card:hover{border-color:var(--r)}
+.road-wk{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--r);margin-bottom:2px}
+.road-act{font-size:12px;color:var(--ink);line-height:1.45}
+
+.res-acts{grid-column:1/-1;display:flex;gap:8px;justify-content:center;padding:4px 0 12px}
+
+/* ── ANALYTICS SECTION ── */
+.an-wrap{padding:0 clamp(20px,5vw,64px) clamp(24px,4vw,44px);max-width:960px;margin:0 auto}
+.an-divider{height:1px;background:var(--ln);margin:0 0 clamp(20px,3vw,36px)}
+.an-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.an-h{font-size:9px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);display:flex;align-items:center;gap:10px;flex:1}
+.an-h::after{content:'';flex:1;height:1px;background:var(--ln)}
+.btn-fullscreen{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:9px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  padding:4px 10px;border:1px solid var(--ln);background:var(--cream);
+  color:var(--dim);cursor:pointer;transition:all .14s;white-space:nowrap;flex-shrink:0
+}
+.btn-fullscreen:hover{border-color:var(--r);color:var(--r)}
+
+.an-card{border:1px solid var(--ln);padding:20px 24px;margin-bottom:14px;background:#fff}
+.chart-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.chart-legend{flex:1;min-width:150px;display:flex;flex-direction:column;gap:9px}
+.cl-item{display:grid;grid-template-columns:7px 1fr auto;align-items:center;gap:8px}
+.cl-dot{width:7px;height:7px;border-radius:50%}
+.cl-txt{font-size:11px;color:var(--mid)}
+.cl-val{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:900;letter-spacing:-.03em}
+
+.swot-grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--ln);margin-bottom:14px;background:#fff}
+.sw{padding:14px 16px;border-right:1px solid var(--ln);border-bottom:1px solid var(--ln);position:relative}
+.sw:nth-child(2),.sw:nth-child(4){border-right:none}
+.sw:nth-child(3),.sw:nth-child(4){border-bottom:none}
+.sw-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:5px;color:var(--mid)}
+.sw-lbl b{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:900;color:var(--ink)}
+.sw-score{position:absolute;top:10px;right:12px;font-size:11px;font-weight:700;padding:1px 7px;border:1px solid}
+.sw-list{list-style:none;display:flex;flex-direction:column;gap:4px}
+.sw-list li{font-size:11px;line-height:1.4;color:var(--mid);display:flex;gap:5px}
+.sw-list li::before{content:'—';color:var(--dim);flex-shrink:0}
+
+.vt{width:100%;border-collapse:collapse;font-size:11px}
+.vt th{background:var(--off);color:var(--dim);font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:9px 12px;text-align:left;border-bottom:1px solid var(--ln)}
+.vt th:not(:first-child){text-align:center}
+.vt td{padding:9px 12px;border-bottom:1px solid var(--ln);color:var(--ink)}
+.vt td:not(:first-child){text-align:center}
+.vt tr:last-child td{border-bottom:none}
+.vt tr:hover td{background:var(--off)}
+.vchk{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:700}
+.vchk.y{background:rgba(22,163,74,.1);color:#15803d}
+.vchk.n{background:rgba(200,16,46,.1);color:var(--r)}
+.vbadge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border:1px solid}
+.v-adv{background:rgba(22,163,74,.07);color:#15803d;border-color:rgba(22,163,74,.2)}
+.v-par{background:rgba(200,16,46,.06);color:var(--r);border-color:rgba(200,16,46,.15)}
+.v-dis{background:rgba(200,16,46,.1);color:var(--r);border-color:rgba(200,16,46,.2)}
+
+.hbar-list{display:flex;flex-direction:column;gap:5px}
+.hbar-row{display:flex;align-items:center;gap:9px}
+.hbar-lbl{font-size:10px;color:var(--mid);min-width:130px;text-align:right;line-height:1.3}
+.hbar-track{flex:1;height:18px;background:var(--off);overflow:hidden}
+.hbar-fill{height:18px;display:flex;align-items:center;padding-right:6px;justify-content:flex-end;min-width:22px;transition:width 1s ease}
+.hbar-fill span{font-size:9px;font-weight:700;color:#fff}
+
+.ans-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+@media(max-width:480px){.ans-grid{grid-template-columns:1fr}}
+.arow{border:1px solid var(--ln);padding:7px 10px;display:flex;align-items:center;gap:7px;background:#fff;transition:border-color .12s}
+.arow:hover{border-color:var(--r)}
+.acode{font-size:10px;font-weight:700;color:var(--dim);min-width:18px}
+.aq{font-size:11px;color:var(--mid);flex:1;line-height:1.3}
+.ascore{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:900;min-width:12px;text-align:right;letter-spacing:-.03em}
+
+/* ── FULLSCREEN OVERLAY ── */
+#fs-overlay{
+  position:fixed;inset:0;z-index:9000;background:var(--cream);
+  display:none;flex-direction:column
+}
+#fs-overlay.open{display:flex}
+.fs-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 24px;border-bottom:1px solid var(--ln);background:#fff
+}
+.fs-title{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:900;letter-spacing:-.03em}
+.fs-close{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+  padding:7px 14px;border:1px solid var(--ln);background:var(--cream);
+  color:var(--mid);cursor:pointer;transition:all .14s
+}
+.fs-close:hover{border-color:var(--r);color:var(--r)}
+.fs-body{flex:1;display:flex;align-items:center;justify-content:center;padding:32px;overflow:auto}
+#fs-canvas-wrap{display:flex;flex-direction:column;align-items:center;gap:24px;width:100%;max-width:800px}
+
+/* ── BUTTONS ── */
+.btn-print,.btn-restart{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer
+}
+.btn-print{padding:10px 20px;background:var(--off);color:var(--mid);border:1px solid var(--ln);transition:all .14s}
+.btn-print:hover{border-color:var(--ink);color:var(--ink)}
+.btn-restart{padding:10px 20px;background:var(--ink);color:#fff;border:none;transition:background .14s}
+.btn-restart:hover{background:#222}
+
+.pg-footer{text-align:center;padding:16px;font-size:10px;color:var(--dim);border-top:1px solid var(--ln);letter-spacing:.04em}
+
+@media print{
+  #pg-land,#pg-co,#pg-quiz,#fs-overlay{display:none!important}
+  #pg-res{display:block!important}
+  .res-acts{display:none!important}
+}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,.1);border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor" aria-hidden="true"></div>
+
+<!-- FULLSCREEN OVERLAY -->
+<div id="fs-overlay" role="dialog" aria-modal="true" aria-label="Диаграмма на весь экран">
+  <div class="fs-header">
+    <div class="fs-title" id="fs-title">Радарная диаграмма</div>
+    <button class="fs-close" onclick="closeFS()">
+      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      Закрыть
+    </button>
+  </div>
+  <div class="fs-body"><div id="fs-canvas-wrap"></div></div>
+</div>
+
+<!-- LANDING -->
+<div id="pg-land" class="pg">
+  <nav class="land-nav">
+    <div class="nav-logo">ПАСП<em>О</em>РТ</div>
+    <div class="nav-pill">SWOT + VRIO · МСБ</div>
+  </nav>
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div>
+        <div class="eyebrow">Инструмент самодиагностики бизнеса</div>
+        <h1 class="hero-h">НА&shy;СКОЛЬКО<br>ЗА&shy;ЩИ&shy;ЩЁН<br><span class="red">ВАШ<br>БИЗ&shy;НЕС?</span></h1>
+        <p class="hero-desc">Ответьте на 24 вопроса по четырём направлениям — получите индекс безопасности, карту уязвимостей и конкретный план действий. Без специальных знаний.</p>
+        <div class="hero-stats">
+          <div class="hs"><div class="hs-num" id="cnt-q">0</div><div class="hs-lbl">вопроса</div></div>
+          <div class="hs"><div class="hs-num" id="cnt-b">0</div><div class="hs-lbl">блока</div></div>
+          <div class="hs"><div class="hs-num" id="cnt-m">0'</div><div class="hs-lbl">минут</div></div>
+        </div>
+      </div>
+      <div>
+        <button class="btn-start" onclick="goToCo()">
+          <span class="btn-start-txt">Начать диагностику</span>
+          <span class="btn-start-box">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </span>
+        </button>
+        <div class="ticker-wrap" style="margin-top:28px">
+          <div class="ticker-inner">
+            <span class="ticker-item red">ФИНАНСЫ</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item">ПЕРСОНАЛ</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item red">ПРОЦЕССЫ</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item">РЫНОК</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item red">БЕЗОПАСНОСТЬ</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item">SWOT</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item red">VRIO</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item">МСБ</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item red">ФИНАНСЫ</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item">ПЕРСОНАЛ</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item red">ПРОЦЕССЫ</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item">РЫНОК</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item red">БЕЗОПАСНОСТЬ</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item">SWOT</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item red">VRIO</span>
+            <span class="ticker-item">·</span>
+            <span class="ticker-item">МСБ</span>
+            <span class="ticker-item">·</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="panel-blocks">
+        <div class="pb"><span class="pb-name">Финансы и ресурсы</span><div style="text-align:right"><span class="pb-code">A</span><div class="pb-count">6 вопросов</div></div></div>
+        <div class="pb"><span class="pb-name">Персонал и знания</span><div style="text-align:right"><span class="pb-code">B</span><div class="pb-count">6 вопросов</div></div></div>
+        <div class="pb"><span class="pb-name">Процессы и ИТ</span><div style="text-align:right"><span class="pb-code">C</span><div class="pb-count">6 вопросов</div></div></div>
+        <div class="pb"><span class="pb-name">Рынок и партнёры</span><div style="text-align:right"><span class="pb-code">D</span><div class="pb-count">6 вопросов</div></div></div>
+      </div>
+      <div class="panel-credit">
+        Методология SWOT + VRIO<br>
+        РЭУ им. Г.В. Плеханова · 2025–2026
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div id="pg-co" class="pg">
+  <div class="form-card">
+    <div class="form-head">
+      <div class="form-kicker">Шаг 1 из 2</div>
+      <div class="form-htitle">ДАННЫЕ<br>КОМПАНИИ</div>
+    </div>
+    <div class="form-body">
+      <div class="fg-grid">
+        <div class="fg full"><label for="f-name">Название компании *</label><input id="f-name" type="text" placeholder="ООО «Название»"></div>
+        <div class="fg"><label for="f-ind">Отрасль</label><input id="f-ind" type="text" placeholder="Производство, услуги..."></div>
+        <div class="fg"><label for="f-sz">Сотрудников</label><input id="f-sz" type="text" placeholder="Например: 45"></div>
+        <div class="fg"><label for="f-mgr">Руководитель</label><input id="f-mgr" type="text" placeholder="Иванов Иван Иванович"></div>
+        <div class="fg"><label for="f-dt">Дата</label><input id="f-dt" type="date"></div>
+      </div>
+      <p class="form-note">Данные используются только для формирования отчёта и не передаются третьим лицам.</p>
+      <button class="btn-form" onclick="goToQuiz()">
+        <span class="btn-form-t">Перейти к опроснику</span>
+        <span class="btn-form-a">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="pg-quiz" class="pg">
+  <div class="qhdr">
+    <div id="prog-fill" class="qhdr-prog"></div>
+    <div class="qhdr-bar">
+      <div class="qhdr-logo">ПАСПОРТ</div>
+      <div class="qhdr-info">
+        <span class="qhdr-num" id="prog-lbl">Вопрос 1 из 24</span>
+        <span class="qhdr-pct" id="prog-pct">4%</span>
+      </div>
+    </div>
+  </div>
+  <div class="quiz-wrap">
+    <div class="blk-strip" id="blk-strip">
+      <div class="bs-seg" id="bs-a"></div>
+      <div class="bs-seg" id="bs-b"></div>
+      <div class="bs-seg" id="bs-c"></div>
+      <div class="bs-seg" id="bs-d"></div>
+    </div>
+    <div class="q-block-row">
+      <div id="blk-badge"></div>
+      <div class="q-idx-lbl" id="q-num"></div>
+    </div>
+    <div class="q-txt" id="q-txt"></div>
+    <div class="opts-table" id="opts"></div>
+    <div class="quiz-nav">
+      <button class="btn-bk" id="btn-bk" onclick="goBack()" disabled>
+        <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        Назад
+      </button>
+      <div class="dots-row" id="dots" role="progressbar" aria-label="Прогресс"></div>
+      <button class="btn-nx" id="btn-nx" onclick="goNext()" disabled>
+        <span class="btn-nx-t"><span id="nx-lbl">Далее</span></span>
+        <span class="btn-nx-a">
+          <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="pg-res">
+  <div class="res-top">
+    <div class="res-co" id="res-co-bar"></div>
+    <div class="res-hero-grid">
+      <div class="res-ring-col">
+        <div class="ring-box" onclick="openFS('radar')" title="Открыть на весь экран">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <circle cx="65" cy="65" r="54" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+            <circle id="ring-arc" cx="65" cy="65" r="54" fill="none" stroke="#c8102e" stroke-width="6"
+              stroke-dasharray="339.3" stroke-dashoffset="339.3" stroke-linecap="round"/>
+          </svg>
+          <div class="ring-inner">
+            <div class="ring-val" id="res-idx">—</div>
+            <div class="ring-of">из 5</div>
+          </div>
+        </div>
+        <div class="res-badge" id="res-badge"></div>
+      </div>
+      <div class="res-txt">
+        <div class="res-htxt" id="res-title"></div>
+        <div class="res-sub" id="res-sub"></div>
+        <div class="bscores" id="bscores"></div>
+      </div>
+    </div>
+  </div>
+  <div class="res-body" id="res-body"></div>
+  <div class="pg-footer">Паспорт безопасности бизнеса · SWOT + VRIO · РЭУ им. Г.В. Плеханова · 2025–2026</div>
+</div>
+
+<!-- ANALYTICS -->
+<div id="pg-analytics" style="display:none;background:var(--cream)">
+  <div class="an-divider"></div>
+  <div class="an-wrap">
+    <div style="margin-bottom:20px">
+      <div class="an-row">
+        <div class="an-h">Радарная диаграмма</div>
+        <button class="btn-fullscreen" onclick="openFS('radar')">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+          На весь экран
+        </button>
+      </div>
+      <div class="an-card"><div class="chart-row">
+        <canvas id="radar-canvas" width="200" height="200" style="flex-shrink:0;cursor:pointer" onclick="openFS('radar')" title="Нажмите для увеличения"></canvas>
+        <div class="chart-legend" id="chart-legend"></div>
+      </div></div>
+    </div>
+    <div style="margin-bottom:20px">
+      <div class="an-row">
+        <div class="an-h">Детальный профиль</div>
+        <button class="btn-fullscreen" onclick="openFS('bars')">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+          На весь экран
+        </button>
+      </div>
+      <div class="an-card"><div class="hbar-list" id="hbar-list"></div></div>
+    </div>
+    <div style="margin-bottom:20px">
+      <div class="an-row">
+        <div class="an-h">SWOT-матрица</div>
+        <button class="btn-fullscreen" onclick="openFS('swot')">
+          <svg width="11" height="11" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+          На весь экран
+        </button>
+      </div>
+      <div class="swot-grid" id="swot-grid"></div>
+    </div>
+    <div style="margin-bottom:20px">
+      <div class="an-row"><div class="an-h">VRIO-анализ ресурсов</div></div>
+      <div class="an-card" style="padding:0;overflow:hidden"><table class="vt" id="vrio-table"></table></div>
+    </div>
+    <div style="margin-bottom:20px">
+      <div class="an-row"><div class="an-h">Все ответы</div></div>
+      <div class="an-card" style="padding:12px 16px"><div class="ans-grid" id="all-ans-grid"></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CURSOR ──
+const cursorEl=document.getElementById('cursor');
+document.addEventListener('mousemove',e=>{cursorEl.style.left=e.clientX+'px';cursorEl.style.top=e.clientY+'px'});
+document.querySelectorAll('button,a,.pb,.bsc').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cursorEl.classList.add('big'));
+  el.addEventListener('mouseleave',()=>cursorEl.classList.remove('big'));
+});
+
+// ── COUNTER ANIMATION ──
+function animateCount(el,target,suffix,duration){
+  let start=null,startVal=0;
+  function step(ts){
+    if(!start)start=ts;
+    const p=Math.min((ts-start)/duration,1);
+    const ease=1-Math.pow(1-p,3);
+    el.textContent=Math.round(startVal+(target-startVal)*ease)+(suffix||'');
+    if(p<1)requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+setTimeout(()=>{
+  animateCount(document.getElementById('cnt-q'),24,'',1000);
+  setTimeout(()=>animateCount(document.getElementById('cnt-b'),4,'',600),200);
+  setTimeout(()=>animateCount(document.getElementById('cnt-m'),20,"'",800),400);
+},400);
+
+// ── DATA ──
+const Qs=[
+  {b:"A",bn:"Финансы и ресурсы",q:"Доля крупнейшего клиента в общей выручке компании",opts:[
+    {s:1,t:"Более 60% — один клиент держит бизнес"},{s:2,t:"40–60% — критическая зависимость"},
+    {s:3,t:"25–40% — заметная, но управляемая"},{s:4,t:"10–25% — диверсификация есть"},
+    {s:5,t:"Менее 10% — ни один клиент не критичен"}]},
+  {b:"A",bn:"Финансы и ресурсы",q:"Финансовый резерв: сколько месяцев компания проработает без новых доходов?",opts:[
+    {s:1,t:"Менее 2 недель — буфера нет"},{s:2,t:"2–4 недели"},
+    {s:3,t:"1–2 месяца"},{s:4,t:"2–3 месяца"},
+    {s:5,t:"3 месяца и более — есть подушка безопасности"}]},
+  {b:"A",bn:"Финансы и ресурсы",q:"Насколько компания зависит от заёмных средств?",opts:[
+    {s:1,t:"Долги критические — обслуживание под угрозой"},{s:2,t:"Высокая нагрузка — большая часть прибыли на выплаты"},
+    {s:3,t:"Умеренная — долги есть, но управляемы"},{s:4,t:"Небольшая — займы есть, нагрузка лёгкая"},
+    {s:5,t:"Минимальная или нулевая — работаем на своих"}]},
+  {b:"A",bn:"Финансы и ресурсы",q:"Насколько прозрачна финансовая картина компании?",opts:[
+    {s:1,t:"Финансы не контролируются — всё интуитивно"},{s:2,t:"Считаем раз в квартал, часто с ошибками"},
+    {s:3,t:"Ежемесячная отчётность, но с задержкой"},{s:4,t:"Еженедельный учёт, понятные цифры"},
+    {s:5,t:"Актуальные данные доступны в любой момент"}]},
+  {b:"A",bn:"Финансы и ресурсы",q:"Зависимость от ключевого поставщика или подрядчика",opts:[
+    {s:1,t:"Один поставщик, замены нет — любой сбой остановит работу"},{s:2,t:"Один основной, переход болезненен"},
+    {s:3,t:"2–3 поставщика, можно переключиться"},{s:4,t:"4+ поставщика, конкуренция между ними"},
+    {s:5,t:"Полная независимость — замену легко найти"}]},
+  {b:"A",bn:"Финансы и ресурсы",q:"Диверсификация источников выручки компании",opts:[
+    {s:1,t:"Один продукт, один сегмент рынка"},{s:2,t:"Один основной продукт, есть пара второстепенных"},
+    {s:3,t:"2–3 направления с сопоставимым вкладом"},{s:4,t:"Несколько направлений, ни одно не доминирует"},
+    {s:5,t:"Широкая диверсификация — потеря одного некритична"}]},
+  {b:"B",bn:"Персонал и знания",q:"Что произойдёт, если уволится ключевой сотрудник?",opts:[
+    {s:1,t:"Катастрофа — незаменимых несколько, замены нет"},{s:2,t:"Серьёзный кризис — восстановление займёт месяцы"},
+    {s:3,t:"Болезненно, но справимся за несколько недель"},{s:4,t:"Неудобно, но процессы задокументированы"},
+    {s:5,t:"Некритично — знания зафиксированы и переданы"}]},
+  {b:"B",bn:"Персонал и знания",q:"Задокументированы ли ключевые бизнес-процессы?",opts:[
+    {s:1,t:"Всё в головах сотрудников, ничего не записано"},{s:2,t:"Есть отдельные записи, но несистемные"},
+    {s:3,t:"Описана примерно половина ключевых процессов"},{s:4,t:"Большинство процессов описаны и доступны"},
+    {s:5,t:"Все задокументированы, регулярно обновляются"}]},
+  {b:"B",bn:"Персонал и знания",q:"Могут ли сотрудники заменить друг друга при необходимости?",opts:[
+    {s:1,t:"Нет — каждый выполняет уникальные задачи"},{s:2,t:"Редко — только в самых простых функциях"},
+    {s:3,t:"Частично — около половины ролей взаимозаменяемы"},{s:4,t:"В основном да — большинство задач несколько человек"},
+    {s:5,t:"Да — команда гибкая, взаимозаменяемость высокая"}]},
+  {b:"B",bn:"Персонал и знания",q:"Есть ли система адаптации и передачи знаний новым сотрудникам?",opts:[
+    {s:1,t:"Нет — новички разбираются самостоятельно"},{s:2,t:"Есть минимальный инструктаж, не систематизированный"},
+    {s:3,t:"Есть базовые материалы, обучение происходит"},{s:4,t:"Налажена система наставничества и обучения"},
+    {s:5,t:"Полноценная система: база знаний, онбординг, тренинги"}]},
+  {b:"B",bn:"Персонал и знания",q:"Насколько сотрудники лояльны и привязаны к компании?",opts:[
+    {s:1,t:"Высокая текучесть, люди уходят регулярно"},{s:2,t:"Текучесть выше нормы, есть явное недовольство"},
+    {s:3,t:"Средний уровень — часть довольна, часть нет"},{s:4,t:"Большинство лояльны, уходят редко"},
+    {s:5,t:"Высокая лояльность, команда стабильная и мотивированная"}]},
+  {b:"B",bn:"Персонал и знания",q:"Защищена ли компания юридически в части конфиденциальности?",opts:[
+    {s:1,t:"Никаких соглашений нет — сотрудники могут унести всё"},{s:2,t:"Подписали единицы, формально"},
+    {s:3,t:"Около половины сотрудников подписали NDA"},{s:4,t:"Большинство подписали, ключевые — все"},
+    {s:5,t:"100% сотрудников подписали соглашения о конфиденциальности"}]},
+  {b:"C",bn:"Процессы и ИТ",q:"Как защищены корпоративные данные и аккаунты?",opts:[
+    {s:1,t:"Никак — общие пароли, нет политики доступов"},{s:2,t:"Есть антивирус, но не более"},
+    {s:3,t:"Разные пароли, базовое разграничение доступов"},{s:4,t:"Парольная политика + 2FA на ключевых сервисах"},
+    {s:5,t:"Комплексная ИБ-политика, регулярный аудит, 2FA везде"}]},
+  {b:"C",bn:"Процессы и ИТ",q:"Что случится с данными, если сломается основной компьютер?",opts:[
+    {s:1,t:"Всё потеряем — резервных копий нет"},{s:2,t:"Потеряем большую часть — бэкапы делаем редко"},
+    {s:3,t:"Потеряем данные за последние недели"},{s:4,t:"Потеряем немного — бэкапы регулярные"},
+    {s:5,t:"Ничего не потеряем — автоматический бэкап в облако"}]},
+  {b:"C",bn:"Процессы и ИТ",q:"Есть ли план действий при сбоях, кибератаках или форс-мажорах?",opts:[
+    {s:1,t:"Нет плана — реагируем хаотично"},{s:2,t:"Есть общее понимание, но не оформленное"},
+    {s:3,t:"Есть базовый план действий"},{s:4,t:"Формализованный план, ответственные назначены"},
+    {s:5,t:"Детальный план + регулярные тренировки реагирования"}]},
+  {b:"C",bn:"Процессы и ИТ",q:"Насколько компания зависит от одного ключевого программного инструмента?",opts:[
+    {s:1,t:"Критически — без него работа остановится"},{s:2,t:"Сильно — переход займёт месяцы"},
+    {s:3,t:"Умеренно — альтернативы есть, переход болезненен"},{s:4,t:"Слабо — переход несложный"},
+    {s:5,t:"Нет зависимости — данные портируемы, ПО легко заменить"}]},
+  {b:"C",bn:"Процессы и ИТ",q:"Насколько стандартизированы операционные процессы?",opts:[
+    {s:1,t:"Каждый делает как считает нужным — стандартов нет"},{s:2,t:"Есть устные договорённости, не зафиксированные"},
+    {s:3,t:"Часть процессов стандартизована"},{s:4,t:"Большинство операций по регламентам"},
+    {s:5,t:"Все процессы стандартизованы и регулярно обновляются"}]},
+  {b:"C",bn:"Процессы и ИТ",q:"Задокументирована ли IT-инфраструктура компании?",opts:[
+    {s:1,t:"Нет — всё в голове у одного человека"},{s:2,t:"Минимальная документация, неактуальная"},
+    {s:3,t:"Частичная документация"},{s:4,t:"Большая часть описана и актуальна"},
+    {s:5,t:"Полная актуальная документация, доступна команде"}]},
+  {b:"D",bn:"Рынок и партнёры",q:"Насколько стабильны отношения с ключевыми клиентами?",opts:[
+    {s:1,t:"Клиенты приходят и уходят — нет постоянных"},{s:2,t:"Есть постоянные, но без договоров и гарантий"},
+    {s:3,t:"Есть ядро клиентов, но удержание нестабильное"},{s:4,t:"Большинство возвращаются, есть долгосрочные договоры"},
+    {s:5,t:"Высокая лояльность клиентов, долгосрочные контракты"}]},
+  {b:"D",bn:"Рынок и партнёры",q:"Насколько компания зависит от одного канала продаж?",opts:[
+    {s:1,t:"Один канал — его потеря остановит продажи"},{s:2,t:"Один основной, остальные незначительные"},
+    {s:3,t:"2–3 канала с сопоставимым вкладом"},{s:4,t:"3–4 рабочих канала"},
+    {s:5,t:"5+ каналов — ни один не критичен"}]},
+  {b:"D",bn:"Рынок и партнёры",q:"Какова репутация компании среди клиентов и на рынке?",opts:[
+    {s:1,t:"Есть серьёзные проблемы — негатив, претензии, судебные риски"},{s:2,t:"Системные жалобы, репутация под угрозой"},
+    {s:3,t:"Нейтральная — есть жалобы, работа ведётся"},{s:4,t:"Хорошая — большинство отзывов позитивные"},
+    {s:5,t:"Отличная — активно мониторим и поддерживаем"}]},
+  {b:"D",bn:"Рынок и партнёры",q:"Насколько юридически защищены отношения с партнёрами и клиентами?",opts:[
+    {s:1,t:"Договоров нет или они формальные без реальной защиты"},{s:2,t:"Есть базовые договоры, но с пробелами"},
+    {s:3,t:"Договоры есть, но юристом не проверялись"},{s:4,t:"Большинство договоров проверены и актуальны"},
+    {s:5,t:"Все юридически выверены и регулярно обновляются"}]},
+  {b:"D",bn:"Рынок и партнёры",q:"Отслеживает ли компания конкурентов и изменения рынка?",opts:[
+    {s:1,t:"Не следим — узнаём об изменениях случайно"},{s:2,t:"Иногда смотрим, но системы нет"},
+    {s:3,t:"Разовый анализ несколько раз в год"},{s:4,t:"Регулярный мониторинг конкурентов"},
+    {s:5,t:"Постоянный мониторинг + оперативная реакция"}]},
+  {b:"D",bn:"Рынок и партнёры",q:"Есть ли у компании конкурентное преимущество, которое сложно скопировать?",opts:[
+    {s:1,t:"Нет — ничем не отличаемся от конкурентов"},{s:2,t:"Есть слабые отличия, легко копируемые"},
+    {s:3,t:"Есть преимущества, но конкуренты могут повторить"},{s:4,t:"Ощутимые преимущества, копируются с трудом"},
+    {s:5,t:"Сильное уникальное преимущество — клиенты выбирают нас"}]}
+];
+
+const BN={A:"Финансы и ресурсы",B:"Персонал и знания",C:"Процессы и ИТ",D:"Рынок и партнёры"};
+const TIER={1:"Критично",2:"Плохо",3:"Нейтрально",4:"Хорошо",5:"Отлично"};
+const RECS={
+  A:"Диверсифицировать доходы и клиентскую базу. Сформировать финансовый резерв минимум на 2 месяца.",
+  B:"Задокументировать критические знания. Разработать программу удержания ключевых сотрудников.",
+  C:"Настроить автоматический бэкап. Внедрить 2FA. Создать план реагирования на инциденты.",
+  D:"Расширить каналы продаж. Укрепить договоры с партнёрами. Выстроить мониторинг рынка."
+};
+const BCOL={A:"#3b82f6",B:"#8b5cf6",C:"#10b981",D:"#c8102e"};
+
+let ans=new Array(Qs.length).fill(null),cur=0,co={},lastBA,lastBB,lastBC,lastBD;
+
+function rc(s){return s>=4?"#15803d":s>=2.5?"#c8102e":"#991b1b";}
+function rb(s){return s>=4?"rgba(21,128,61,.1)":s>=2.5?"rgba(200,16,46,.1)":"rgba(153,27,27,.15)";}
+function rl(s){return s>=4?"Норма":s>=2.5?"Зона риска":"Критично";}
+function bsc(b){const r=Qs.map((q,i)=>({...q,a:ans[i]})).filter(q=>q.b===b);return +(r.reduce((s,q)=>s+q.a,0)/r.length).toFixed(2);}
+
+function goToCo(){
+  document.getElementById("pg-land").style.display="none";
+  document.getElementById("pg-co").style.display="flex";
+  document.getElementById("f-dt").value=new Date().toISOString().split("T")[0];
+  window.scrollTo(0,0);
+}
+
+function goToQuiz(){
+  const nm=document.getElementById("f-name").value.trim();
+  if(!nm){document.getElementById("f-name").focus();return;}
+  co={name:nm,ind:document.getElementById("f-ind").value.trim(),sz:document.getElementById("f-sz").value.trim(),mgr:document.getElementById("f-mgr").value.trim(),dt:document.getElementById("f-dt").value};
+  document.getElementById("pg-co").style.display="none";
+  document.getElementById("pg-quiz").style.display="flex";
+  render();window.scrollTo(0,0);
+}
+
+function updateBlockStrip(){
+  const blocks=["A","B","C","D"];
+  blocks.forEach((b,bi)=>{
+    const seg=document.getElementById("bs-"+b.toLowerCase());
+    const qs=Qs.filter(q=>q.b===b);
+    const done=qs.filter((_,i)=>ans[Qs.indexOf(Qs.filter(q=>q.b===b)[i])]!==null).length;
+    const isCur=Qs[cur].b===b;
+    seg.className="bs-seg"+(isCur?" active":done===qs.length?" done":"");
+  });
+}
+
+function render(){
+  const q=Qs[cur];
+  const pct=Math.round((cur+1)/Qs.length*100);
+  document.getElementById("prog-fill").style.width=pct+"%";
+  document.getElementById("prog-pct").textContent=pct+"%";
+  document.getElementById("prog-lbl").textContent="Вопрос "+(cur+1)+" из "+Qs.length;
+  updateBlockStrip();
+
+  document.getElementById("blk-badge").innerHTML=
+    `<div class="q-blk-badge"><span class="q-blk-dot" style="background:${BCOL[q.b]}"></span>Блок ${q.b} — ${q.bn}</div>`;
+  document.getElementById("q-num").textContent="Вопрос "+(cur+1);
+
+  const qt=document.getElementById("q-txt");
+  qt.classList.add("hide");
+  setTimeout(()=>{qt.textContent=q.q;qt.classList.remove("hide");},180);
+
+  const ol=document.getElementById("opts");
+  ol.style.opacity="0";
+  setTimeout(()=>{
+    ol.innerHTML="";
+    q.opts.forEach((o,i)=>{
+      const btn=document.createElement("button");
+      btn.className="opt"+(ans[cur]===o.s?" sel":"");
+      btn.innerHTML=`<div class="opt-n">${o.s}</div><div class="opt-body"><div class="opt-tier">${TIER[o.s]}</div><div class="opt-lbl">${o.t}</div></div>`;
+      btn.onclick=()=>pick(o.s);
+      ol.appendChild(btn);
+    });
+    ol.style.transition="opacity .2s";
+    ol.style.opacity="1";
+  },180);
+
+  const dw=document.getElementById("dots");dw.innerHTML="";
+  Qs.forEach((_,i)=>{const d=document.createElement("div");d.className="dot"+(i===cur?" cur":ans[i]!==null?" done":"");dw.appendChild(d);});
+  document.getElementById("btn-bk").disabled=cur===0;
+  document.getElementById("btn-nx").disabled=ans[cur]===null;
+  document.getElementById("nx-lbl").textContent=cur===Qs.length-1?"Получить результат":"Далее";
+}
+
+function pick(s){
+  ans[cur]=s;
+  document.querySelectorAll(".opt").forEach(b=>b.classList.toggle("sel",parseInt(b.querySelector(".opt-n").textContent)===s));
+  document.getElementById("btn-nx").disabled=false;
+}
+
+function goBack(){if(cur>0){cur--;render();window.scrollTo(0,0);}}
+function goNext(){
+  if(ans[cur]===null)return;
+  if(cur<Qs.length-1){cur++;render();window.scrollTo(0,0);}
+  else showResult();
+}
+
+function showResult(){
+  const bA=bsc("A"),bB=bsc("B"),bC=bsc("C"),bD=bsc("D");
+  lastBA=bA;lastBB=bB;lastBC=bC;lastBD=bD;
+  const idx=+((bA*.30+bB*.28+bC*.22+bD*.20)).toFixed(2);
+  document.getElementById("pg-quiz").style.display="none";
+  document.getElementById("pg-res").style.display="block";
+  window.scrollTo(0,0);
+
+  const flds=[[" Компания",co.name],co.ind?["Отрасль",co.ind]:null,co.sz?["Сотрудников",co.sz]:null,co.mgr?["Руководитель",co.mgr]:null,co.dt?["Дата",new Date(co.dt).toLocaleDateString("ru-RU")]:null].filter(Boolean);
+  document.getElementById("res-co-bar").innerHTML=flds.map(([l,v])=>`<div class="rcf"><div class="rcl">${l}</div><div class="rcv">${v}</div></div>`).join("");
+
+  const arc=document.getElementById("ring-arc"),C=339.3;
+  arc.style.strokeDashoffset=C;arc.style.stroke=rc(idx);
+  setTimeout(()=>{arc.style.transition="stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1)";arc.style.strokeDashoffset=C-(idx/5)*C;},150);
+
+  document.getElementById("res-idx").textContent=idx.toFixed(2);
+  const bdg=document.getElementById("res-badge");
+  const zone=idx>=4?"ok":idx>=2.5?"warn":"crit";
+  bdg.textContent=rl(idx);
+  bdg.style.cssText=`background:${rb(idx)};color:${rc(idx)};border-color:${rc(idx)};`;
+
+  document.getElementById("res-title").textContent={ok:"Компания в безопасной зоне",warn:"Зона внимания — есть риски",crit:"Требуются срочные меры"}[zone];
+  document.getElementById("res-sub").textContent={ok:"Высокий уровень внутренней защищённости. Сосредоточьтесь на точечном улучшении слабых мест.",warn:"Выявлены уязвимости, которые при неблагоприятных условиях могут перерасти в кризис.",crit:"Обнаружены критические уязвимости. Немедленно приступайте к устранению ключевых рисков."}[zone];
+
+  const bsEl=document.getElementById("bscores");
+  [["A",bA],["B",bB],["C",bC],["D",bD]].forEach(([b,s])=>{
+    bsEl.innerHTML+=`<div class="bsc" onclick="openFS('radar')" title="Открыть диаграмму на весь экран">
+      <div class="bsc-n">Блок ${b} — ${BN[b]}</div>
+      <div class="bsc-v" style="color:${rc(s)}">${s}</div>
+      <div class="bsc-bar"><div class="bsc-fill" style="width:0%;background:${rc(s)}" data-w="${Math.round(s/5*100)}"></div></div>
+      <div class="bsc-s" style="color:${rc(s)}">${rl(s)}</div>
+      <div class="bsc-expand">↗ нажмите для просмотра</div>
+    </div>`;
+  });
+  setTimeout(()=>{document.querySelectorAll(".bsc-fill").forEach(el=>{el.style.transition="width 1s ease";el.style.width=el.dataset.w+"%";});},200);
+
+  const sorted=Qs.map((q,i)=>({...q,a:ans[i]})).sort((a,b)=>a.a-b.a);
+  const top3=sorted.slice(0,3);
+  const rm=[
+    {w:"1–2 нед.",a:"Поговорить с ключевыми сотрудниками об их планах. Настроить 2FA для корпоративных аккаунтов.",v:"B, C"},
+    {w:"2–4 нед.",a:"Начать документировать критические процессы. Настроить автоматическое резервное копирование.",v:"B, C"},
+    {w:"1–2 мес.",a:"Разработать программу удержания сотрудников. Активизировать привлечение новых клиентов.",v:"B, A"},
+    {w:"2–3 мес.",a:"Провести юридический аудит договоров. Выстроить несколько каналов продаж.",v:"D, A"},
+    {w:"3 мес.",a:"Повторная диагностика: заполнить «Паспорт безопасности» снова и измерить прогресс.",v:"Все блоки"},
+  ];
+  document.getElementById("res-body").innerHTML=`
+    <div>
+      <div class="sec-lbl">Топ-3 зоны риска</div>
+      ${top3.map(q=>`<div class="rcard" style="border-left-color:${rc(q.a)}"><div class="rnum" style="background:${rb(q.a)};color:${rc(q.a)}">${q.a}</div><div><div class="r-blk">Блок ${q.b} — ${q.bn}</div><div class="r-q">${q.q}</div><div class="r-rec">${RECS[q.b]}</div></div></div>`).join("")}
+    </div>
+    <div class="road-sec">
+      <div class="sec-lbl">Дорожная карта на 90 дней</div>
+      <div class="road-list">${rm.map(r=>`<div class="road-row"><div class="road-tl"><div class="road-dot"></div><div class="road-line"></div></div><div class="road-card"><div class="road-wk">${r.w} · Блоки: ${r.v}</div><div class="road-act">${r.a}</div></div></div>`).join("")}</div>
+    </div>
+    <div style="grid-column:1/-1;display:flex;gap:8px;justify-content:center;padding:4px 0 12px">
+      <button class="btn-print" onclick="window.print()">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        Распечатать
+      </button>
+      <button class="btn-restart" onclick="restartAll()">
+        <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        Пройти заново
+      </button>
+    </div>`;
+
+  buildAnalytics(bA,bB,bC,bD);
+}
+
+// ── ANALYTICS ──
+function drawRadar(cvs,W,H,bA,bB,bC,bD,fontSize){
+  const ctx=cvs.getContext("2d");
+  const cx=W/2,cy=H/2,R=Math.min(W,H)*0.36;
+  const blocks=[["A",bA,BCOL.A],["B",bB,BCOL.B],["C",bC,BCOL.C],["D",bD,BCOL.D]];
+  const labels=["Финансы","Персонал","Процессы","Рынок"];
+  const angles=blocks.map((_,i)=>-Math.PI/2+(Math.PI/2)*i);
+  ctx.clearRect(0,0,W,H);
+  for(let g=1;g<=5;g++){
+    ctx.beginPath();
+    angles.forEach((a,i)=>{const r=R*g/5;i===0?ctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a)):ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));});
+    ctx.closePath();ctx.strokeStyle="rgba(0,0,0,0.06)";ctx.lineWidth=1;ctx.stroke();
+    if(g===5){ctx.fillStyle="rgba(200,16,46,.015)";ctx.fill();}
+  }
+  angles.forEach(a=>{ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));ctx.strokeStyle="rgba(0,0,0,0.08)";ctx.lineWidth=1;ctx.stroke();});
+  ctx.beginPath();
+  blocks.forEach(([b,s],i)=>{const r=R*s/5;i===0?ctx.moveTo(cx+r*Math.cos(angles[i]),cy+r*Math.sin(angles[i])):ctx.lineTo(cx+r*Math.cos(angles[i]),cy+r*Math.sin(angles[i]));});
+  ctx.closePath();ctx.fillStyle="rgba(200,16,46,.08)";ctx.fill();ctx.strokeStyle="#c8102e";ctx.lineWidth=2;ctx.stroke();
+  blocks.forEach(([b,s,col],i)=>{const r=R*s/5;ctx.beginPath();ctx.arc(cx+r*Math.cos(angles[i]),cy+r*Math.sin(angles[i]),5,0,Math.PI*2);ctx.fillStyle=col;ctx.fill();ctx.strokeStyle="#fff";ctx.lineWidth=1.5;ctx.stroke();});
+  ctx.font=`600 ${fontSize||10}px Inter,system-ui`;ctx.textAlign="center";ctx.fillStyle="#555";
+  const lo=R+18;
+  blocks.forEach(([b,s],i)=>{ctx.fillText(labels[i],cx+lo*Math.cos(angles[i]),cy+lo*Math.sin(angles[i])+4);});
+  ctx.font=`700 ${fontSize||10}px Inter,system-ui`;
+  blocks.forEach(([b,s,col],i)=>{const r=R*s/5;ctx.fillStyle=rc(s);ctx.fillText(s.toFixed(1),cx+r*Math.cos(angles[i]),cy+r*Math.sin(angles[i])-10);});
+}
+
+function buildAnalytics(bA,bB,bC,bD){
+  document.getElementById("pg-analytics").style.display="block";
+  const cvs=document.getElementById("radar-canvas");
+  drawRadar(cvs,200,200,bA,bB,bC,bD,10);
+
+  document.getElementById("chart-legend").innerHTML=[["A",bA,BCOL.A],["B",bB,BCOL.B],["C",bC,BCOL.C],["D",bD,BCOL.D]].map(([b,s,col])=>
+    `<div class="cl-item"><div class="cl-dot" style="background:${col}"></div><div class="cl-txt">${BN[b]}</div><div class="cl-val" style="color:${rc(s)}">${s.toFixed(2)}</div></div>`).join("");
+
+  document.getElementById("hbar-list").innerHTML=Qs.map((q,i)=>{
+    const code=q.b+(Qs.filter(x=>x.b===q.b).indexOf(q)+1);
+    const pct=Math.round(ans[i]/5*100);
+    return `<div class="hbar-row"><div class="hbar-lbl">${code} — ${q.q.length>34?q.q.slice(0,34)+"…":q.q}</div><div class="hbar-track"><div class="hbar-fill" style="width:0%;background:${rc(ans[i])}" data-w="${pct}"><span>${ans[i]}</span></div></div></div>`;
+  }).join("");
+  setTimeout(()=>{document.querySelectorAll(".hbar-fill").forEach(el=>{el.style.transition="width 1s ease";el.style.width=el.dataset.w+"%";});},100);
+
+  const S=[],W2=[],O=[],T=[];
+  Qs.forEach((q,i)=>{
+    const s=ans[i],b=q.b;
+    if(s>=4)S.push({q,s}); else if(s<=2)W2.push({q,s});
+    if(b==="D"&&s>=4)O.push({q,s}); else if(b==="D"&&s<=2)T.push({q,s});
+    if(b==="A"&&s<=2)T.push({q,s}); if(b==="C"&&s>=4)O.push({q,s});
+  });
+  const dedup=a=>[...new Map(a.map(x=>[x.q.q,x])).values()];
+  const avg=a=>a.length?(a.reduce((s,x)=>s+x.s,0)/a.length).toFixed(1):"—";
+  const li=a=>dedup(a).slice(0,4).map(x=>`<li>${x.q.q.length>46?x.q.q.slice(0,46)+"…":x.q.q} <b style="color:${rc(x.s)}">(${x.s})</b></li>`).join("")||"<li style='color:#999'>Не выявлено</li>";
+
+  document.getElementById("swot-grid").innerHTML=`
+    <div class="sw"><div class="sw-lbl"><b>S</b> Сильные стороны</div><div class="sw-score" style="color:#15803d;border-color:rgba(21,128,61,.2)">${avg(dedup(S).slice(0,4))}</div><ul class="sw-list">${li(S)}</ul></div>
+    <div class="sw"><div class="sw-lbl"><b>W</b> Слабые стороны</div><div class="sw-score" style="color:#c8102e;border-color:rgba(200,16,46,.2)">${avg(dedup(W2).slice(0,4))}</div><ul class="sw-list">${li(W2)}</ul></div>
+    <div class="sw"><div class="sw-lbl"><b>O</b> Возможности</div><div class="sw-score" style="color:#15803d;border-color:rgba(21,128,61,.2)">${avg(dedup(O).slice(0,3))}</div><ul class="sw-list">${li(O)}</ul></div>
+    <div class="sw"><div class="sw-lbl"><b>T</b> Угрозы</div><div class="sw-score" style="color:#c8102e;border-color:rgba(200,16,46,.2)">${avg(dedup(T).slice(0,3))}</div><ul class="sw-list">${li(T)}</ul></div>`;
+
+  const vr=[
+    {n:"Финансовая устойчивость",d:"Резервы, зависимость, учёт",V:bA>=3,R:bA>=4,I:bA>=4,O:bA>=3.5},
+    {n:"Кадровый потенциал",d:"Удержание, знания, лояльность",V:bB>=3,R:bB>=4,I:bB>=3.5,O:bB>=3.5},
+    {n:"ИТ и операции",d:"Защита, бэкапы, регламенты",V:bC>=3,R:bC>=4,I:bC>=3.5,O:bC>=3},
+    {n:"Рыночные позиции",d:"Клиенты, каналы, репутация",V:bD>=3,R:bD>=4,I:bD>=3.5,O:bD>=3},
+    {n:"Конкурентное преимущество",d:"Уникальность, защищённость",V:(bD+bB)/2>=3,R:(bD+bB)/2>=4,I:(bD+bB)/2>=3.5,O:bD>=3},
+  ];
+  const vRes=(V,R,I,O)=>V?R?I?O?`<span class="vbadge v-adv">Устойчивое преим.</span>`:`<span class="vbadge v-par">Неисп. потенциал</span>`:`<span class="vbadge v-par">Врем. преимущество</span>`:`<span class="vbadge v-par">Паритет</span>`:`<span class="vbadge v-dis">Недостаток</span>`;
+  const vc=v=>`<span class="vchk ${v?"y":"n"}">${v?"✓":"✕"}</span>`;
+  document.getElementById("vrio-table").innerHTML=`
+    <thead><tr><th style="min-width:140px">Ресурс</th><th title="Ценность">V</th><th title="Редкость">R</th><th title="Неповторимость">I</th><th title="Организованность">O</th><th style="min-width:140px">Результат</th></tr></thead>
+    <tbody>${vr.map(r=>`<tr><td><div style="font-size:12px;font-weight:500">${r.n}</div><div style="font-size:10px;color:#999">${r.d}</div></td><td>${vc(r.V)}</td><td>${vc(r.R)}</td><td>${vc(r.I)}</td><td>${vc(r.O)}</td><td>${vRes(r.V,r.R,r.I,r.O)}</td></tr>`).join("")}</tbody>`;
+
+  const ag=document.getElementById("all-ans-grid");
+  if(ag)ag.innerHTML=Qs.map((q,i)=>{
+    const code=q.b+(Qs.filter(x=>x.b===q.b).indexOf(q)+1);
+    return `<div class="arow"><div class="acode">${code}</div><div class="aq">${q.q}</div><div class="ascore" style="color:${rc(ans[i])}">${ans[i]}</div></div>`;
+  }).join("");
+}
+
+// ── FULLSCREEN ──
+function openFS(type){
+  const ov=document.getElementById("fs-overlay");
+  const wrap=document.getElementById("fs-canvas-wrap");
+  const title=document.getElementById("fs-title");
+  wrap.innerHTML="";
+
+  if(type==="radar"){
+    title.textContent="Радарная диаграмма — профиль безопасности";
+    const cvs=document.createElement("canvas");
+    cvs.width=520;cvs.height=520;cvs.style.cssText="max-width:100%;max-height:70vh";
+    wrap.appendChild(cvs);
+    drawRadar(cvs,520,520,lastBA,lastBB,lastBC,lastBD,14);
+    const leg=document.createElement("div");
+    leg.style.cssText="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-top:12px";
+    [["A",lastBA,BCOL.A],["B",lastBB,BCOL.B],["C",lastBC,BCOL.C],["D",lastBD,BCOL.D]].forEach(([b,s,col])=>{
+      leg.innerHTML+=`<div style="display:flex;align-items:center;gap:8px"><div style="width:8px;height:8px;border-radius:50%;background:${col}"></div><span style="font-size:12px;color:#555">${BN[b]}</span><span style="font-family:Unbounded,sans-serif;font-size:14px;font-weight:900;color:${rc(s)}">${s.toFixed(2)}</span></div>`;
+    });
+    wrap.appendChild(leg);
+  } else if(type==="bars"){
+    title.textContent="Детальный профиль — все вопросы";
+    const list=document.createElement("div");
+    list.style.cssText="display:flex;flex-direction:column;gap:6px;width:100%;max-width:680px";
+    Qs.forEach((q,i)=>{
+      const code=q.b+(Qs.filter(x=>x.b===q.b).indexOf(q)+1);
+      const pct=Math.round(ans[i]/5*100);
+      list.innerHTML+=`<div style="display:flex;align-items:center;gap:10px"><div style="font-size:11px;color:#555;min-width:150px;text-align:right">${code} — ${q.q.length>40?q.q.slice(0,40)+"…":q.q}</div><div style="flex:1;height:22px;background:#eee;overflow:hidden"><div style="height:22px;width:${pct}%;background:${rc(ans[i])};display:flex;align-items:center;padding-right:7px;justify-content:flex-end;min-width:22px;transition:width .8s ease"><span style="font-size:10px;font-weight:700;color:#fff">${ans[i]}</span></div></div></div>`;
+    });
+    wrap.appendChild(list);
+  } else if(type==="swot"){
+    title.textContent="SWOT-матрица";
+    const sg=document.getElementById("swot-grid").cloneNode(true);
+    sg.style.cssText="width:100%;max-width:680px;font-size:13px";
+    sg.querySelectorAll(".sw-list li").forEach(li=>li.style.fontSize="12px");
+    wrap.appendChild(sg);
+  }
+
+  ov.classList.add("open");
+  document.body.style.overflow="hidden";
+}
+
+function closeFS(){
+  document.getElementById("fs-overlay").classList.remove("open");
+  document.body.style.overflow="";
+}
+
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeFS();});
+
+function restartAll(){
+  ans=new Array(Qs.length).fill(null);cur=0;co={};lastBA=lastBB=lastBC=lastBD=undefined;
+  ["pg-res","pg-analytics"].forEach(id=>document.getElementById(id).style.display="none");
+  ["bscores","res-co-bar","chart-legend","hbar-list","swot-grid","vrio-table"].forEach(id=>document.getElementById(id).innerHTML="");
+  const ag=document.getElementById("all-ans-grid");if(ag)ag.innerHTML="";
+  ["f-name","f-ind","f-sz","f-mgr"].forEach(id=>document.getElementById(id).value="");
+  document.getElementById("pg-land").style.display="flex";
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
